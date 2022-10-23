@@ -7,7 +7,7 @@
 2. `npm ci`;
 3. `npm run start`;
 
-Frontend is accessible by the localhost `http://localhost:1234/`
+Frontend is accessible on the localhost `http://localhost:1234/`
 
 
 
@@ -19,4 +19,4 @@ Frontend is accessible by the localhost `http://localhost:1234/`
 
 To clear the database run `npm run clear`. 
 
-Backend is accessible by the localhost `http://localhost:3003/`
+Backend is accessible on the localhost `http://localhost:3003/`
