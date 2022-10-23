@@ -8,7 +8,15 @@ const controller = (request, response, query) => {
   // Enable CORS
   response.setHeader("Access-Control-Allow-Origin", "*");
   response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
+  response.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS");
+  response.setHeader("Access-Control-Max-Age", "30000");
+  
+  if (method === 'OPTIONS') {
+    response.writeHead(200);
+    response.end();
+    return
+  }
+  
   console.log(`${new Date}: Incoming request: ${method} ${url}`);
   handler(request, response, query, queryParamsData).then(()=>{
     console.log(`${new Date}: Response for ${method} ${url} sent`)

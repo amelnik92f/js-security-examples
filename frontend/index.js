@@ -2,6 +2,8 @@ const url = 'http://localhost:3003/api';
 
 const USER_KEY = "user";
 
+const makeBody = (data) => JSON.stringify(data);
+
 const getUserFromLocalStorage = () => {
   try {
     const user = localStorage.getItem(USER_KEY);
@@ -28,7 +30,7 @@ const renderComment = (commentData, isAdmin) => {
   if (isAdmin) {
     const deleteButton = commentWrapper.querySelector('.comment-delete');
     deleteButton.addEventListener('click', async ()=>{
-      onCommentDelete(commentData.id).then(commentWrapper.remove)
+      onCommentDelete(commentData.id);
     })
   }
 
@@ -62,19 +64,19 @@ const onCommentSearch = async () => {
 
 const onCommentSend = async () => {
   const { value } = document.querySelector("#send");
-  const { role } = getUserFromLocalStorage();
+  const { role, id } = getUserFromLocalStorage();
   const isAdmin = role === "admin";
-  const rawResponse = await fetch({url: `${url}/comments`, method: 'POST', body: { text: value }} );
+  const rawResponse = await fetch(`${url}/comments`, {method: 'POST', body: makeBody({ text: value, user_id: id })} );
   const commentData = await rawResponse.json();
   insertComment(commentData, isAdmin)
 }
 
 const onCommentDelete = async (commentId) => {
   try {
-    const rawResponse = await fetch({url: `${url}/comments/${commentId}`, method: 'DELETE'});
-    const data = await rawResponse.json();
-    
-    return data;
+    const { id } = getUserFromLocalStorage();
+
+    await fetch(`${url}/admin/comments`, {method: 'DELETE', body: makeBody({user_id: id, id: commentId})});
+    await getComments();
   } catch(error) {
     console.error(`Can't delete the comment: ${error}`);
   }
@@ -108,7 +110,7 @@ const onLogin = async () => {
   const { value } = document.getElementById('name');
   
   try {
-    const rawResponse = await fetch({url: `${url}/users`, method: 'POST', body: { name: value }} );
+    const rawResponse = await fetch(`${url}/users`, { method: 'POST', body: makeBody({ name: value })} );
     const user = await rawResponse.json();
     localStorage.setItem(USER_KEY, JSON.stringify(user));
     checkLogin();
@@ -117,11 +119,16 @@ const onLogin = async () => {
   }
 }
 
+const onLogout = () => {
+  localStorage.clear();
+  checkLogin();
+}
+
 const onProfileUpdate = async () => {
-  const name = document.getElementById("username");
-  const age = document.getElementById("age");
+  const name = document.getElementById("username").value;
+  const age = Number(document.getElementById("age").value);
   const { id } = getUserFromLocalStorage();
-  const rawData = await fetch({url: `${url}/users/${id}`, method: 'PUT', body: { name, age }})
+  const rawData = await fetch(`${url}/users`, { method: 'PUT', body: makeBody({ name, age, id })})
 
   const user = await rawData.json();
   localStorage.setItem(USER_KEY, JSON.stringify(user));
@@ -132,15 +139,47 @@ const init = () => {
   const searchButton = document.getElementById('search-button');
   const sendButton = document.getElementById('send-button');
   const updateProfileButton = document.getElementById('update-user');
+  const logoutButton = document.getElementById('logout-user');
+
   loginButton.addEventListener('click', onLogin);
   searchButton.addEventListener('click', onCommentSearch);
   sendButton.addEventListener('click', onCommentSend);
   updateProfileButton.addEventListener('click', onProfileUpdate);
-
+  logoutButton.addEventListener('click', onLogout);
   checkLogin();
 }
 
 
-(() => {
-  document.addEventListener('DOMContentLoaded',init)
+(async () => {
+  document.addEventListener('DOMContentLoaded',init);
 })()
+
+
+// const targetStr = '{"__proto__":{"role":"admin"}}';
+
+// const target1 = { age: "Database sanitization expert" };
+// const source2 = JSON.parse(targetStr);
+// curl -H "Content-Type: application/json" -X PUT -d '{"id": "18","age": 90,"__proto__":{"isAdmin":true}}' http://localhost:3003/api/users
+
+// function merge(target, source) {
+//   for (const attr in source) {
+//     if (
+//       typeof target[attr] === "object" &&
+//       typeof source[attr] === "object"
+//     ) {
+//       merge(target[attr], source[attr])
+//     } else {
+//       target[attr] = source[attr]
+//     }
+//   }
+
+//   return target;
+// }
+
+
+// merge(target1, source2);
+// const obj = {};
+
+// console.log(target1);
+
+// console.log(obj.role);
