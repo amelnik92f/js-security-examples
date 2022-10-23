@@ -61,9 +61,10 @@ button:hover {
   width: 100vw;
   height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 400px;
+  grid-template-columns: 750px 400px;
   padding: 1rem;
   gap: 1rem;
+  justify-content: center;
 }
 
 .comments {
@@ -130,6 +131,7 @@ img {
   font-size: 1.5rem;
   margin-bottom: 1rem;
   position: relative;
+  word-break: break-all;
 }
 
 .comment-author {
