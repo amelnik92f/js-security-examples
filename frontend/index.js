@@ -153,33 +153,3 @@ const init = () => {
 (async () => {
   document.addEventListener('DOMContentLoaded',init);
 })()
-
-
-// const targetStr = '{"__proto__":{"role":"admin"}}';
-
-// const target1 = { age: "Database sanitization expert" };
-// const source2 = JSON.parse(targetStr);
-// curl -H "Content-Type: application/json" -X PUT -d '{"id": "18","age": 90,"__proto__":{"isAdmin":true}}' http://localhost:3003/api/users
-
-// function merge(target, source) {
-//   for (const attr in source) {
-//     if (
-//       typeof target[attr] === "object" &&
-//       typeof source[attr] === "object"
-//     ) {
-//       merge(target[attr], source[attr])
-//     } else {
-//       target[attr] = source[attr]
-//     }
-//   }
-
-//   return target;
-// }
-
-
-// merge(target1, source2);
-// const obj = {};
-
-// console.log(target1);
-
-// console.log(obj.role);
