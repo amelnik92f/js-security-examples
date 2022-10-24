@@ -1,4 +1,6 @@
-# DO NOT USE THE CODE FROM PROJECT IN REAL APPS AS SOON AS IT CONTAINS SECURITY VULNERABILITIES.
+# DO NOT USE THE CODE FROM PROJECT IN REAL APPS AS SOON AS IT CONTAINS SECURITY VULNERABILITIES. 
+
+# IT'S DEMO PROJECT WAS CREATED FOR EDUCATIONAL PURPOSES TO PROVIDE MOST COMMON EXAMPLES OF SECURITY HOLES IN FRONTEND APPS
 
 ## How to run:
 
@@ -7,7 +9,7 @@
 2. `npm ci`;
 3. `npm run start`;
 
-Frontend is accessible by the localhost `http://localhost:1234/`
+Frontend is accessible on the localhost `http://localhost:1234/`
 
 
 
@@ -19,4 +21,4 @@ Frontend is accessible by the localhost `http://localhost:1234/`
 
 To clear the database run `npm run clear`. 
 
-Backend is accessible by the localhost `http://localhost:3003/`
+Backend is accessible on the localhost `http://localhost:3003/`
